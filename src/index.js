@@ -1,0 +1,18 @@
+import EscenaMain from "./scenes/EscenaMain.js"; // Asegúrate de que esta ruta sea correcta
+import GameOver from "./scenes/GameOver.js";
+
+let config = {
+    type: Phaser.AUTO,
+    width: 800,
+    height: 600,
+    physics: { // Corrige la propiedad "Physics" a "physics"
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 0 },
+            debug: false
+        }
+    },
+    scene: [EscenaMain, GameOver]
+};
+
+let game = new Phaser.Game(config);
