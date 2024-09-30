@@ -40,14 +40,12 @@ class EscenaMain extends Phaser.Scene {
 
     update() {
         this.jugador.setVelocityX(0);
+        this.jugador.setVelocityY(0);
+        
         if (this.cursors.left.isDown) {
             this.jugador.setVelocityX(-300);
         } else if (this.cursors.right.isDown) {
             this.jugador.setVelocityX(300);
-        }
-        else
-        {
-            this.jugador.setVelocityX(0);
         }
 
         if (this.cursors.up.isDown)
