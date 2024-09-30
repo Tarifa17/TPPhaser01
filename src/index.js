@@ -5,6 +5,7 @@ let config = {
     type: Phaser.AUTO,
     width: 800,
     height: 600,
+    parent: 'game',
     physics: { // Corrige la propiedad "Physics" a "physics"
         default: 'arcade',
         arcade: {
