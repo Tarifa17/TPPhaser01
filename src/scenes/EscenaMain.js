@@ -10,7 +10,7 @@ class EscenaMain extends Phaser.Scene {
     preload() {
         this.load.image('cielo', '/public/resources/sky.jpeg');
         this.load.image('nave', '/public/resources/SS2.png');
-        this.load.image('meteoro', '/public/resources/SpaceShip.png');
+        this.load.image('meteoro2', '/public/resources/meteoroA.png');
     }
 
     create() {
@@ -27,13 +27,13 @@ class EscenaMain extends Phaser.Scene {
 
     generarMeteoros() {
         const x = Phaser.Math.Between(0, 800);
-        const meteoro = this.grupoMeteoros.create(x, 0, 'meteoro');
+        const meteoro = this.grupoMeteoros.create(x, 0, 'meteoro2');
         meteoro.setVelocityY(200);
     }
 
     gameOver(jugador) {
-        this.physics.pause();
-        jugador.setTint(0xff0000);
+        this.physics.pause();//pausa el juego
+        jugador.setTint(0xff0000);//cambia el color 
         console.log('Game Over');
         this.scene.start('GameOver', {puntaje:this.puntaje});
     }
