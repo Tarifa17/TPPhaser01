@@ -54,6 +54,9 @@ class EscenaMain extends Phaser.Scene {
         {
             this.jugador.setVelocityY(-150);
         }
+        else if (this.cursors.down.isDown) {
+            this.jugador.setVelocityY(150);
+        }
         this.puntaje += 1;
         this.textoPuntaje.setText('Puntaje: ' + this.puntaje); 
     }
