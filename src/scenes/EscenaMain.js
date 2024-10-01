@@ -9,9 +9,13 @@ class EscenaMain extends Phaser.Scene {
 
     preload() {
         this.load.image('cielo', '/public/resources/sky.jpeg');
-        this.load.image('nave', '/public/resources/SS2.png');
+        //this.load.image('nave', '/public/resources/SS2.png');
         this.load.image('meteoro2', '/public/resources/meteoroA.png');
+
         this.load.image('Coin', '/public/resources/Coin.png');
+
+        this.load.spritesheet('nave', '/public/resources/sheep-Sheet.png', {frameWidth:32, frameHeight: 30})
+
     }
 
     create() {
@@ -26,6 +30,7 @@ class EscenaMain extends Phaser.Scene {
         this.physics.add.collider(this.jugador, this.grupoMeteoros, this.gameOver, null, this);
 // Detectar colisión entre jugador y monedas
 this.physics.add.overlap(this.jugador, this.grupoObjetoEspecial, this.recogerObjetoEspecial, null, this);
+
 
         this.textoPuntaje = this.add.text(16,16,'Puntaje: 0', { fontSize: '32px', fill: '#fff' });
         
@@ -44,6 +49,24 @@ this.physics.add.overlap(this.jugador, this.grupoObjetoEspecial, this.recogerObj
         const bonus = this.grupoObjetoEspecial.create(x, 0, 'Coin'); 
         bonus.setVelocityY(200);
         
+        
+        this.anims.create({
+            key: 'izquierda',
+            frames: [{key: 'nave', frame: 0}],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'normal',
+            frames: [{key: 'nave', frame:1}],
+            frameRate: 20
+        })
+
+        this.anims.create({
+            key: 'derecha',
+            frames: [{key: 'nave', frame:2}],
+            frameRate:20
+        })
     }
     recogerObjetoEspecial(jugador, coin) {
         coin.destroy(); // Elimina la moneda (Coin) una vez recogida
@@ -75,8 +98,12 @@ this.physics.add.overlap(this.jugador, this.grupoObjetoEspecial, this.recogerObj
         
         if (this.cursors.left.isDown) {
             this.jugador.setVelocityX(-300);
+            this.jugador.anims.play('izquierda', true);
         } else if (this.cursors.right.isDown) {
             this.jugador.setVelocityX(300);
+            this.jugador.anims.play('derecha', true);
+        }else{
+            this.jugador.anims.play('normal', true);
         }
 
         if (this.cursors.up.isDown) {
