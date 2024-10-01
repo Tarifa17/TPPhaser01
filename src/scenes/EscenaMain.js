@@ -31,6 +31,23 @@ class EscenaMain extends Phaser.Scene {
 // Detectar colisión entre jugador y monedas
 this.physics.add.overlap(this.jugador, this.grupoObjetoEspecial, this.recogerObjetoEspecial, null, this);
 
+this.anims.create({
+    key: 'izquierda',
+    frames: [{key: 'nave', frame: 0}],
+    frameRate: 20
+});
+
+this.anims.create({
+    key: 'normal',
+    frames: [{key: 'nave', frame:1}],
+    frameRate: 20
+})
+
+this.anims.create({
+    key: 'derecha',
+    frames: [{key: 'nave', frame:2}],
+    frameRate:20
+})
 
         this.textoPuntaje = this.add.text(16,16,'Puntaje: 0', { fontSize: '32px', fill: '#fff' });
         
@@ -50,23 +67,7 @@ this.physics.add.overlap(this.jugador, this.grupoObjetoEspecial, this.recogerObj
         bonus.setVelocityY(200);
         
         
-        this.anims.create({
-            key: 'izquierda',
-            frames: [{key: 'nave', frame: 0}],
-            frameRate: 20
-        });
-
-        this.anims.create({
-            key: 'normal',
-            frames: [{key: 'nave', frame:1}],
-            frameRate: 20
-        })
-
-        this.anims.create({
-            key: 'derecha',
-            frames: [{key: 'nave', frame:2}],
-            frameRate:20
-        })
+        
     }
     recogerObjetoEspecial(jugador, coin) {
         coin.destroy(); // Elimina la moneda (Coin) una vez recogida
