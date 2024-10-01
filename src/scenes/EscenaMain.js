@@ -57,6 +57,7 @@ class EscenaMain extends Phaser.Scene {
         }
         this.puntaje += 1;
         this.textoPuntaje.setText('Puntaje: ' + this.puntaje); 
+        
     }
 
  
