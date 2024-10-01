@@ -11,11 +11,8 @@ class EscenaMain extends Phaser.Scene {
         this.load.image('cielo', '/public/resources/sky.jpeg');
         //this.load.image('nave', '/public/resources/SS2.png');
         this.load.image('meteoro2', '/public/resources/meteoroA.png');
-
         this.load.image('Coin', '/public/resources/Coin.png');
-
-        this.load.spritesheet('nave', '/public/resources/sheep-Sheet.png', {frameWidth:32, frameHeight: 30})
-
+        this.load.audio('MusicaFondo','/public/resources/MusicaFondo.mp3');
     }
 
     create() {
@@ -58,6 +55,9 @@ this.anims.create({
             callbackScope: this,
             loop: false 
         });
+        //musica de fondo
+        this.MusicaFondo =this.sound.add ('MusicaFondo',{loop :true});
+    this.MusicaFondo.play();
     }
 
     // Método para generar el objeto en una posición aleatoria
@@ -66,13 +66,12 @@ this.anims.create({
         const bonus = this.grupoObjetoEspecial.create(x, 0, 'Coin'); 
         bonus.setVelocityY(200);
         
-        
-        
     }
     recogerObjetoEspecial(jugador, coin) {
         coin.destroy(); // Elimina la moneda (Coin) una vez recogida
         console.log("Moneda recogida!");
         this.scene.start('EscenaBonus', { puntaje: this.puntaje }); // Cambia a la escena "EscenaBonus" y pasa el puntaje
+        this.MusicaFondo.play();
     }
     //metodo para usarse al volver del EScenaBonus
     init(data) {
@@ -91,6 +90,7 @@ this.anims.create({
         jugador.setTint(0xff0000);
         console.log('Game Over');
         this.scene.start('GameOver', { puntaje: this.puntaje });
+        this.MusicaFondo.stop();
     }
 
     update() {
@@ -99,12 +99,8 @@ this.anims.create({
         
         if (this.cursors.left.isDown) {
             this.jugador.setVelocityX(-300);
-            this.jugador.anims.play('izquierda', true);
         } else if (this.cursors.right.isDown) {
             this.jugador.setVelocityX(300);
-            this.jugador.anims.play('derecha', true);
-        }else{
-            this.jugador.anims.play('normal', true);
         }
 
         if (this.cursors.up.isDown) {
