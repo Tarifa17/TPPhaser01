@@ -9,7 +9,7 @@ class EscenaMain extends Phaser.Scene {
 
     preload() {
         this.load.image('cielo', '/public/resources/sky.jpeg');
-        this.load.image('nave', '/public/resources/SS2.png');
+        //this.load.image('nave', '/public/resources/SS2.png');
         this.load.image('meteoro2', '/public/resources/meteoroA.png');
         this.load.image('Coin', '/public/resources/Coin.png');
         this.load.audio('MusicaFondo','/public/resources/MusicaFondo.mp3');
@@ -27,6 +27,24 @@ class EscenaMain extends Phaser.Scene {
         this.physics.add.collider(this.jugador, this.grupoMeteoros, this.gameOver, null, this);
 // Detectar colisión entre jugador y monedas
 this.physics.add.overlap(this.jugador, this.grupoObjetoEspecial, this.recogerObjetoEspecial, null, this);
+
+this.anims.create({
+    key: 'izquierda',
+    frames: [{key: 'nave', frame: 0}],
+    frameRate: 20
+});
+
+this.anims.create({
+    key: 'normal',
+    frames: [{key: 'nave', frame:1}],
+    frameRate: 20
+})
+
+this.anims.create({
+    key: 'derecha',
+    frames: [{key: 'nave', frame:2}],
+    frameRate:20
+})
 
         this.textoPuntaje = this.add.text(16,16,'Puntaje: 0', { fontSize: '32px', fill: '#fff' });
         
