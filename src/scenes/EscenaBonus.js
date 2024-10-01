@@ -100,8 +100,12 @@ class EscenaBonus extends Phaser.Scene {
         // Controlar el movimiento del jugador con las flechas del teclado
         if (this.cursors.left.isDown) {
             this.jugador.setVelocityX(-300); // Movimiento a la izquierda
+            this.jugador.anims.play('izquierda', true);
         } else if (this.cursors.right.isDown) {
             this.jugador.setVelocityX(300); // Movimiento a la derecha
+            this.jugador.anims.play('derecha', true);
+        }else{
+            this.jugador.anims.play('normal', true);
         }
 
         if (this.cursors.up.isDown) {
