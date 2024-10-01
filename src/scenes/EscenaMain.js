@@ -12,6 +12,7 @@ class EscenaMain extends Phaser.Scene {
         this.load.image('nave', '/public/resources/SS2.png');
         this.load.image('meteoro2', '/public/resources/meteoroA.png');
         this.load.image('Coin', '/public/resources/Coin.png');
+        this.load.audio('MusicaFondo','/public/resources/MusicaFondo.mp3');
     }
 
     create() {
@@ -36,6 +37,9 @@ this.physics.add.overlap(this.jugador, this.grupoObjetoEspecial, this.recogerObj
             callbackScope: this,
             loop: false 
         });
+        //musica de fondo
+        this.MusicaFondo =this.sound.add ('MusicaFondo',{loop :true});
+    this.MusicaFondo.play();
     }
 
     // Método para generar el objeto en una posición aleatoria
@@ -49,6 +53,7 @@ this.physics.add.overlap(this.jugador, this.grupoObjetoEspecial, this.recogerObj
         coin.destroy(); // Elimina la moneda (Coin) una vez recogida
         console.log("Moneda recogida!");
         this.scene.start('EscenaBonus', { puntaje: this.puntaje }); // Cambia a la escena "EscenaBonus" y pasa el puntaje
+        this.MusicaFondo.play();
     }
     //metodo para usarse al volver del EScenaBonus
     init(data) {
@@ -67,6 +72,7 @@ this.physics.add.overlap(this.jugador, this.grupoObjetoEspecial, this.recogerObj
         jugador.setTint(0xff0000);
         console.log('Game Over');
         this.scene.start('GameOver', { puntaje: this.puntaje });
+        this.MusicaFondo.stop();
     }
 
     update() {
