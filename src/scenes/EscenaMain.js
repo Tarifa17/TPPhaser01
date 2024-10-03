@@ -13,6 +13,7 @@ class EscenaMain extends Phaser.Scene {
         this.load.image('meteoro2', '/public/resources/meteoroA.png');
         this.load.image('Coin', '/public/resources/Coin.png');
         this.load.audio('MusicaFondo','/public/resources/MusicaFondo.mp3');
+        this.load.spritesheet('nave', '/public/resources/sheep-Sheet.png', {frameWidth:32, frameHeight: 30})
     }
 
     create() {
@@ -99,8 +100,12 @@ this.anims.create({
         
         if (this.cursors.left.isDown) {
             this.jugador.setVelocityX(-300);
+            this.jugador.anims.play('izquierda', true);
         } else if (this.cursors.right.isDown) {
             this.jugador.setVelocityX(300);
+            this.jugador.anims.play('derecha', true);
+        }else{
+            this.jugador.anims.play('normal', true);
         }
 
         if (this.cursors.up.isDown) {
