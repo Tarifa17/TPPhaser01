@@ -116,6 +116,12 @@ this.anims.create({
 
         this.puntaje += 1;
         this.textoPuntaje.setText('Puntaje: ' + this.puntaje); 
+
+        if (this.puntaje >= 200) {
+            console.log('Cambiando a EscenaHorizontal');
+            this.MusicaFondo.stop(); // Detener la música de fondo
+            this.scene.start('EscenaHorizontal', { puntaje: this.puntaje }); // Cambiar a la escena "EscenaHorizontal" y pasar el puntaje
+        }
     }
 }
 
