@@ -9,10 +9,11 @@ class EscenaHorizontal extends Phaser.Scene {
 
     preload() {
         this.load.image('space2', '/public/resources/space2.png');
-        this.load.image('proyectil', '/public/resources/bullet.png');
+        this.load.image('bullet', '/public/resources/bullet.png');
         //this.load.image('nave', '/public/resources/SS2.png');
-        this.load.image('meteoro2', '/public/resources/meteoroA.png');
-        this.load.image('boss', '/public/resources/bosy.png');
+        this.load.image('enemigoA', '/public/resources/enemigoA.png');
+        this.load.image('boss', '/public/resources/boss1.png');
+        this.load.audio('finalBoss', '/public/resources/finalBoss.mp3');
         this.load.audio('MusicaFondo', '/public/resources/MusicaFondo.mp3');
         this.load.audio('disparo', '/public/resources/disparoS.mp3');
         this.load.audio('explosion', '/public/resources/explosion1.mp3');
@@ -65,7 +66,7 @@ class EscenaHorizontal extends Phaser.Scene {
 
     generarMeteoros() {
         const y = Phaser.Math.Between(0, 600);
-        const meteoro = this.grupoMeteoros.create(600, y, 'meteoro2');
+        const meteoro = this.grupoMeteoros.create(600, y, 'enemigoA');
         meteoro.setVelocityX(-100);
     }
 
@@ -77,8 +78,8 @@ class EscenaHorizontal extends Phaser.Scene {
         this.MusicaFondo.stop();
     }
     disparar() {
-        const proyectil = this.grupoProyectiles.create(this.jugador.x, this.jugador.y, 'proyectil');
-        proyectil.setVelocityX(400); // Ajusta la velocidad hacia arriba (puedes modificar este valor)
+        const proyectil = this.grupoProyectiles.create(this.jugador.x, this.jugador.y, 'bullet');
+        proyectil.setVelocityX(400); 
         this.sound.play('disparo');
     }
     destruirMeteoro(proyectil, meteoro) {
@@ -122,11 +123,27 @@ class EscenaHorizontal extends Phaser.Scene {
                 this.boss.visible = true;
                 this.tweens.add({
                     targets: this.boss,
-                    x: 650, // Ajusta este valor para que se quede parcialmente visible
-                    duration: 3000, // Duración de la animación
-                    ease: 'Power2'
+                    x: 700, // Ajusta este valor para que se quede parcialmente visible
+                    duration: 5000, // Duración de la animación de entrada
+                    ease: 'Power2',
                 });
+            
+                // Animación de movimiento arriba y abajo
+                this.tweens.add({
+                    targets: this.boss,
+                    y: '+=50', // Mover hacia abajo
+                    duration: 1500,
+                    yoyo: true,
+                    repeat: -1, // Repetir indefinidamente
+                    ease: 'Sine.easeInOut'
+                });
+                this.finalBoss = this.sound.add('finalBoss'); 
+
+    this.finalBoss.play();
+    this.MusicaFondo.stop();
             }
+            
+            
     ///boss-------------------------------------------------------------------------------------------
 
     }

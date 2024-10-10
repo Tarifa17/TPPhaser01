@@ -18,11 +18,14 @@ class EscenaBonus extends Phaser.Scene {
         this.load.image('Space', '/public/resources/Space.jpg');
         this.load.image('nave', '/public/resources/SS2.png');
         this.load.image('coin', '/public/resources/Coin.png'); 
+        this.load.audio('BonusS','/public/resources/BonusS.mp3');
     }
 
     create() {
         this.add.image(400, 300, 'Space');
-        
+        this.BonusS = this.sound.add('BonusS'); // Agrega esta línea para definir el sonido
+
+    this.BonusS.play(); // Ahora esto funcionará correctamente
         // Jugador
         this.jugador = this.physics.add.sprite(400, 550, 'nave');
         this.jugador.setCollideWorldBounds(true); // Evita que el jugador salga de los bordes del mundo
