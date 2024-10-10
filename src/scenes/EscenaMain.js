@@ -57,7 +57,7 @@ this.anims.create({
         
         // Generar bonus después de 10 segundos
         this.time.addEvent({
-            delay: 30000, 
+            delay: 10000, 
             callback: this.generarObjetoEspecial, // Llama al método para generar el objeto
             callbackScope: this,
             loop: false 

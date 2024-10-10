@@ -9,9 +9,10 @@ class EscenaHorizontal extends Phaser.Scene {
 
     preload() {
         this.load.image('space2', '/public/resources/space2.png');
-        this.load.image('proyectil', '/public/resources/bullet1.png');
+        this.load.image('proyectil', '/public/resources/bullet.png');
         //this.load.image('nave', '/public/resources/SS2.png');
         this.load.image('meteoro2', '/public/resources/meteoroA.png');
+        this.load.image('boss', '/public/resources/bosy.png');
         this.load.audio('MusicaFondo', '/public/resources/MusicaFondo.mp3');
         this.load.audio('disparo', '/public/resources/disparoS.mp3');
         this.load.audio('explosion', '/public/resources/explosion1.mp3');
@@ -32,6 +33,9 @@ class EscenaHorizontal extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.physics.add.collider(this.jugador, this.grupoMeteoros, this.gameOver, null, this);
         this.physics.add.collider(this.grupoProyectiles, this.grupoMeteoros, this.destruirMeteoro, null, this);
+        //boss---------------------------------------------------------------------------------
+        this.boss = this.add.image(900, 200, 'boss'); // Ajusta la posición y dimensiones del jefe
+        this.boss.visible = false; // Ocultar inicialmente el jefe
 
         this.anims.create({
             key: 'down',
@@ -85,6 +89,7 @@ class EscenaHorizontal extends Phaser.Scene {
         this.textoPuntaje.setText('Puntaje: ' + this.puntaje); // Actualiza el puntaje en pantalla
     }
 
+
     update() {
         this.jugador.setVelocityX(0);
         this.jugador.setVelocityY(0);
@@ -111,6 +116,19 @@ class EscenaHorizontal extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(this.teclaDisparo) || Phaser.Input.Keyboard.JustDown(this.teclaEspacio)) {
             this.disparar();
         }
+            //boss/.--------------------------------------------------------------------------------------------------
+            if (this.puntaje >= 2000 && !this.boss.visible) {
+                // Mostrar el jefe y animar su entrada
+                this.boss.visible = true;
+                this.tweens.add({
+                    targets: this.boss,
+                    x: 650, // Ajusta este valor para que se quede parcialmente visible
+                    duration: 3000, // Duración de la animación
+                    ease: 'Power2'
+                });
+            }
+    ///boss-------------------------------------------------------------------------------------------
+
     }
 }
 export default EscenaHorizontal;
