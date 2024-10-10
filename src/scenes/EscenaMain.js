@@ -10,23 +10,30 @@ class EscenaMain extends Phaser.Scene {
     preload() {
         this.load.image('cielo', '/public/resources/sky.jpeg');
         //this.load.image('nave', '/public/resources/SS2.png');
+        this.load.image('proyectil', '/public/resources/bullet1.png');//cargando la imagen bala
+
         this.load.image('meteoro2', '/public/resources/meteoroA.png');
         this.load.image('Coin', '/public/resources/Coin.png');
         this.load.audio('MusicaFondo','/public/resources/MusicaFondo.mp3');
+        this.load.audio('disparo', '/public/resources/disparoS.mp3');
+        this.load.audio('explosion', '/public/resources/explosion1.mp3');
+        this.load.spritesheet('nave', '/public/resources/sheep-Sheet.png', {frameWidth:32, frameHeight: 30})
     }
 
     create() {
         this.add.image(400, 300, 'cielo');
         this.jugador = this.physics.add.sprite(400, 550, 'nave');
-    
+        //proyectiles---------------------------------------------------------------------
         this.jugador.setCollideWorldBounds(true);
         this.grupoMeteoros = this.physics.add.group();
         this.grupoObjetoEspecial = this.physics.add.group(); // Grupo para el objeto especial
         this.time.addEvent({ delay: 1000, callback: this.generarMeteoros, callbackScope: this, loop: true });
         this.cursors = this.input.keyboard.createCursorKeys();
+        //collision jugador meteoros
         this.physics.add.collider(this.jugador, this.grupoMeteoros, this.gameOver, null, this);
 // Detectar colisión entre jugador y monedas
 this.physics.add.overlap(this.jugador, this.grupoObjetoEspecial, this.recogerObjetoEspecial, null, this);
+//collision meteoros y bullet
 
 this.anims.create({
     key: 'izquierda',
@@ -99,8 +106,12 @@ this.anims.create({
         
         if (this.cursors.left.isDown) {
             this.jugador.setVelocityX(-300);
+            this.jugador.anims.play('izquierda', true);
         } else if (this.cursors.right.isDown) {
             this.jugador.setVelocityX(300);
+            this.jugador.anims.play('derecha', true);
+        }else{
+            this.jugador.anims.play('normal', true);
         }
 
         if (this.cursors.up.isDown) {
@@ -111,7 +122,6 @@ this.anims.create({
 
         this.puntaje += 1;
         this.textoPuntaje.setText('Puntaje: ' + this.puntaje); 
-        
     }
 }
 
