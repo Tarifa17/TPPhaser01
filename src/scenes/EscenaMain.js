@@ -57,7 +57,7 @@ this.anims.create({
         
         // Generar bonus después de 10 segundos
         this.time.addEvent({
-            delay: 30000, 
+            delay: 10000, 
             callback: this.generarObjetoEspecial, // Llama al método para generar el objeto
             callbackScope: this,
             loop: false 
@@ -80,7 +80,7 @@ this.anims.create({
         this.scene.start('EscenaBonus', { puntaje: this.puntaje }); // Cambia a la escena "EscenaBonus" y pasa el puntaje
         this.MusicaFondo.play();
     }
-    //metodo para usarse al volver del EScenaBonus
+    //metodo para usarse al volver de la EScenaBonus
     init(data) {
         this.puntaje = data.puntaje || 0; // Si no hay puntaje recibido, lo deja en 0
     }

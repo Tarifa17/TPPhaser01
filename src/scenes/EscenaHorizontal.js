@@ -9,9 +9,11 @@ class EscenaHorizontal extends Phaser.Scene {
 
     preload() {
         this.load.image('space2', '/public/resources/space2.png');
-        this.load.image('proyectil', '/public/resources/bullet1.png');
+        this.load.image('bullet', '/public/resources/bullet.png');
         //this.load.image('nave', '/public/resources/SS2.png');
-        this.load.image('meteoro2', '/public/resources/meteoroA.png');
+        this.load.image('enemigoA', '/public/resources/enemigoA.png');
+        this.load.image('boss', '/public/resources/boss1.png');
+        this.load.audio('finalBoss', '/public/resources/finalBoss.mp3');
         this.load.audio('MusicaFondo', '/public/resources/MusicaFondo.mp3');
         this.load.audio('disparo', '/public/resources/disparoS.mp3');
         this.load.audio('explosion', '/public/resources/explosion1.mp3');
@@ -32,6 +34,9 @@ class EscenaHorizontal extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.physics.add.collider(this.jugador, this.grupoMeteoros, this.gameOver, null, this);
         this.physics.add.collider(this.grupoProyectiles, this.grupoMeteoros, this.destruirMeteoro, null, this);
+        //boss---------------------------------------------------------------------------------
+        this.boss = this.add.image(900, 200, 'boss'); // Ajusta la posición y dimensiones del jefe
+        this.boss.visible = false; // Ocultar inicialmente el jefe
 
         this.anims.create({
             key: 'down',
@@ -61,7 +66,7 @@ class EscenaHorizontal extends Phaser.Scene {
 
     generarMeteoros() {
         const y = Phaser.Math.Between(0, 600);
-        const meteoro = this.grupoMeteoros.create(600, y, 'meteoro2');
+        const meteoro = this.grupoMeteoros.create(600, y, 'enemigoA');
         meteoro.setVelocityX(-100);
     }
 
@@ -73,8 +78,8 @@ class EscenaHorizontal extends Phaser.Scene {
         this.MusicaFondo.stop();
     }
     disparar() {
-        const proyectil = this.grupoProyectiles.create(this.jugador.x, this.jugador.y, 'proyectil');
-        proyectil.setVelocityX(400); // Ajusta la velocidad hacia arriba (puedes modificar este valor)
+        const proyectil = this.grupoProyectiles.create(this.jugador.x, this.jugador.y, 'bullet');
+        proyectil.setVelocityX(400); 
         this.sound.play('disparo');
     }
     destruirMeteoro(proyectil, meteoro) {
@@ -84,6 +89,7 @@ class EscenaHorizontal extends Phaser.Scene {
         this.puntaje += 400; // Aumenta el puntaje o realiza cualquier otra acción que desees
         this.textoPuntaje.setText('Puntaje: ' + this.puntaje); // Actualiza el puntaje en pantalla
     }
+
 
     update() {
         this.jugador.setVelocityX(0);
@@ -111,6 +117,35 @@ class EscenaHorizontal extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(this.teclaDisparo) || Phaser.Input.Keyboard.JustDown(this.teclaEspacio)) {
             this.disparar();
         }
+            //boss/.--------------------------------------------------------------------------------------------------
+            if (this.puntaje >= 2000 && !this.boss.visible) {
+                // Mostrar el jefe y animar su entrada
+                this.boss.visible = true;
+                this.tweens.add({
+                    targets: this.boss,
+                    x: 700, // Ajusta este valor para que se quede parcialmente visible
+                    duration: 5000, // Duración de la animación de entrada
+                    ease: 'Power2',
+                });
+            
+                // Animación de movimiento arriba y abajo
+                this.tweens.add({
+                    targets: this.boss,
+                    y: '+=50', // Mover hacia abajo
+                    duration: 1500,
+                    yoyo: true,
+                    repeat: -1, // Repetir indefinidamente
+                    ease: 'Sine.easeInOut'
+                });
+                this.finalBoss = this.sound.add('finalBoss'); 
+
+    this.finalBoss.play();
+    this.MusicaFondo.stop();
+            }
+            
+            
+    ///boss-------------------------------------------------------------------------------------------
+
     }
 }
 export default EscenaHorizontal;
