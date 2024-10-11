@@ -5,6 +5,7 @@ class EscenaHorizontal extends Phaser.Scene {
         this.cursors = null;
         this.puntaje = 0;
         this.textoPuntaje = 0;
+        this.boss = null;
     }
 
     preload() {
@@ -35,8 +36,9 @@ class EscenaHorizontal extends Phaser.Scene {
         this.physics.add.collider(this.jugador, this.grupoMeteoros, this.gameOver, null, this);
         this.physics.add.collider(this.grupoProyectiles, this.grupoMeteoros, this.destruirMeteoro, null, this);
         //boss---------------------------------------------------------------------------------
-        this.boss = this.add.image(900, 200, 'boss'); // Ajusta la posición y dimensiones del jefe
-        this.boss.visible = false; // Ocultar inicialmente el jefe
+        this.boss = this.physics.add.image(900, 200, 'boss');
+        this.boss.visible = false; 
+        this.physics.add.collider(this.grupoProyectiles, this.boss, this.destruirBoss, null, this);
 
         this.anims.create({
             key: 'down',
@@ -76,6 +78,7 @@ class EscenaHorizontal extends Phaser.Scene {
         console.log('Game Over');
         this.scene.start('GameOver', { puntaje: this.puntaje });
         this.MusicaFondo.stop();
+        this.finalBoss.stop();
     }
     disparar() {
         const proyectil = this.grupoProyectiles.create(this.jugador.x, this.jugador.y, 'bullet');
@@ -88,6 +91,13 @@ class EscenaHorizontal extends Phaser.Scene {
         this.sound.play('explosion');
         this.puntaje += 400; // Aumenta el puntaje o realiza cualquier otra acción que desees
         this.textoPuntaje.setText('Puntaje: ' + this.puntaje); // Actualiza el puntaje en pantalla
+    }
+    destruirBoss(proyectil, boss) {
+        proyectil.destroy(); // Destruir proyectil al colisionar
+        this.sound.play('explosion');
+        boss.destroy(); // Destruir al jefe
+        this.finalBoss.stop(); // Detener música del jefe
+        this.MusicaFondo.play(); // Reiniciar la música de fondo
     }
 
 
