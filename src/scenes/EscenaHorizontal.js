@@ -9,6 +9,7 @@ class EscenaHorizontal extends Phaser.Scene {
 
     preload() {
         this.load.image('space2', '/public/resources/space2.png');
+
         this.load.image('bullet', '/public/resources/bullet.png');
         //this.load.image('nave', '/public/resources/SS2.png');
         this.load.image('enemigoA', '/public/resources/enemigoA.png');
@@ -55,6 +56,8 @@ class EscenaHorizontal extends Phaser.Scene {
             frames: [{ key: 'nave', frame: 2 }],
             frameRate: 20
         })
+
+
 
         this.textoPuntaje = this.add.text(16, 16, 'Puntaje: 0', { fontSize: '32px', fill: '#fff' });
 
