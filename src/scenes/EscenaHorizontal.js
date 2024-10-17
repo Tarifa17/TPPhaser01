@@ -19,12 +19,12 @@ class EscenaHorizontal extends Phaser.Scene {
         this.load.audio('MusicaFondo', '/public/resources/MusicaFondo.mp3');
         this.load.audio('disparo', '/public/resources/disparoS.mp3');
         this.load.audio('explosion', '/public/resources/explosion1.mp3');
-        this.load.spritesheet('nave', '/public/resources/sheep-Sheet.png', { frameWidth: 32, frameHeight: 30 })
+        this.load.spritesheet('nave1', '/public/resources/nave2-Sheet.png', { frameWidth: 64, frameHeight: 54 })
     }
 
     create() {
         this.add.image(400, 300, 'space2');
-        this.jugador = this.physics.add.sprite(20, 300, 'nave');
+        this.jugador = this.physics.add.sprite(20, 300, 'nave1');
         this.jugador.setCollideWorldBounds(true);
 
         this.grupoProyectiles = this.physics.add.group(); // Crear el grupo de proyectiles
@@ -42,20 +42,20 @@ class EscenaHorizontal extends Phaser.Scene {
         this.physics.add.collider(this.grupoProyectiles, this.boss, this.destruirBoss, null, this);
 
         this.anims.create({
-            key: 'down',
-            frames: [{ key: 'nave', frame: 0 }],
+            key: 'up',
+            frames: [{ key: 'nave1', frame: 0 }],
             frameRate: 20
         });
 
         this.anims.create({
-            key: 'normal',
-            frames: [{ key: 'nave', frame: 1 }],
+            key: 'normalito',
+            frames: [{ key: 'nave1', frame: 1 }],
             frameRate: 20
         })
 
         this.anims.create({
-            key: 'up',
-            frames: [{ key: 'nave', frame: 2 }],
+            key: 'down',
+            frames: [{ key: 'nave1', frame: 2 }],
             frameRate: 20
         })
 
@@ -121,7 +121,7 @@ class EscenaHorizontal extends Phaser.Scene {
             this.jugador.setVelocityY(150);
             this.jugador.anims.play('down', true);
         }else{
-            this.jugador.anims.play('normal', true);
+            this.jugador.anims.play('normalito', true);
         }
 
         this.puntaje += 1;
