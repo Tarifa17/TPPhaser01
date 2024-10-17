@@ -37,9 +37,10 @@ class EscenaHorizontal extends Phaser.Scene {
         this.physics.add.collider(this.jugador, this.grupoMeteoros, this.gameOver, null, this);
         this.physics.add.collider(this.grupoProyectiles, this.grupoMeteoros, this.destruirMeteoro, null, this);
         //boss---------------------------------------------------------------------------------
-        this.boss = this.physics.add.image(900, 200, 'boss');
-        this.boss.visible = false; 
-        this.physics.add.collider(this.grupoProyectiles, this.boss, this.destruirBoss, null, this);
+        this.boss = this.physics.add.sprite(900, 200, 'boss');
+        this.boss.visible = false;
+        this.boss.setActive(false);
+        
 
         this.anims.create({
             key: 'up',
@@ -81,7 +82,9 @@ class EscenaHorizontal extends Phaser.Scene {
         console.log('Game Over');
         this.scene.start('GameOver', { puntaje: this.puntaje });
         this.MusicaFondo.stop();
-        this.finalBoss.stop();
+        if (this.finalBoss && this.finalBoss.isPlaying) {
+            this.finalBoss.stop();
+        }
     }
     disparar() {
         const proyectil = this.grupoProyectiles.create(this.jugador.x, this.jugador.y, 'bullet');
@@ -99,9 +102,49 @@ class EscenaHorizontal extends Phaser.Scene {
         proyectil.destroy(); // Destruir proyectil al colisionar
         this.sound.play('explosion');
         boss.destroy(); // Destruir al jefe
-        this.finalBoss.stop(); // Detener música del jefe
-        this.MusicaFondo.play(); // Reiniciar la música de fondo
+        if (this.finalBoss && this.finalBoss.isPlaying) {
+            this.finalBoss.stop(); // Detener musica del jefe
+        }
+    
+        // Reiniciar la música de fondo
+        if (this.MusicaFondo && !this.MusicaFondo.isPlaying) {
+            this.MusicaFondo.play();
+        }
     }
+    aparecerBoss() {
+        // Mostrar el jefe 
+        this.boss.visible = true;
+    this.boss.setActive(true); // Activar el jefe para que interactúe con la física
+    //this.boss.body.enable = true;
+    
+        // Animación de entrada del jefe 
+        this.tweens.add({
+            targets: this.boss,
+            x: 700, 
+            duration: 5000, 
+            ease: 'Power2',
+        });
+    
+        // Animación  del jefe
+        this.tweens.add({
+            targets: this.boss,
+            y: '+=50', 
+            duration: 1500,
+            yoyo: true,
+            repeat: -1, 
+            ease: 'Sine.easeInOut'
+        });
+    
+        // Reproducir la música del jefe
+        this.finalBoss = this.sound.add('finalBoss'); 
+        this.finalBoss.play();
+        this.MusicaFondo.stop();
+    
+        console.log('El jefe ha aparecido!');
+
+        this.physics.add.collider(this.grupoProyectiles, this.boss, this.destruirBoss, null, this);
+    }
+    
 
 
     update() {
@@ -132,28 +175,7 @@ class EscenaHorizontal extends Phaser.Scene {
         }
             //boss/.--------------------------------------------------------------------------------------------------
             if (this.puntaje >= 2000 && !this.boss.visible) {
-                // Mostrar el jefe y animar su entrada
-                this.boss.visible = true;
-                this.tweens.add({
-                    targets: this.boss,
-                    x: 700, // Ajusta este valor para que se quede parcialmente visible
-                    duration: 5000, // Duración de la animación de entrada
-                    ease: 'Power2',
-                });
-            
-                // Animación de movimiento arriba y abajo
-                this.tweens.add({
-                    targets: this.boss,
-                    y: '+=50', // Mover hacia abajo
-                    duration: 1500,
-                    yoyo: true,
-                    repeat: -1, // Repetir indefinidamente
-                    ease: 'Sine.easeInOut'
-                });
-                this.finalBoss = this.sound.add('finalBoss'); 
-
-    this.finalBoss.play();
-    this.MusicaFondo.stop();
+                this.aparecerBoss(); // Llamar a una función para manejar la aparición del jefe
             }
             
             
